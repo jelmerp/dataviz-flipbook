@@ -1,0 +1,263 @@
+---
+title: "ggplot intro plots"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 20:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice
+knitr::opts_chunk$set(fig.width = 8, message = FALSE, warning = FALSE, comment = "", cache = TRUE)
+library(flipbookr)
+library(tidyverse)
+library(gapminder)
+library(ggrepel)
+```
+
+```{r scatterplot, include = FALSE}
+iris %>%
+  ggplot() +
+  aes(x = Petal.Length, y = Petal.Width) + #OMIT
+  aes(x = Petal.Length, y = Petal.Width) + #ROTATE
+  aes(x = Sepal.Length, y = Sepal.Width) + #ROTATE
+  geom_point() +
+  aes(color = Species) +
+  geom_smooth(method = "lm") +
+  aes(linetype = Species)
+```
+
+`r chunk_reveal(chunk_name = "scatterplot", title = "### Iris", omit = "#ROTATE", break_type = "auto", widths = c(40, 60))`
+
+---
+
+`r chunk_reveal(chunk_name = "scatterplot", title = "### Iris", omit = "#OMIT", break_type = "rotate", widths = c(40, 60))`
+
+---
+
+```{r scatterplot2, include = FALSE}
+iris %>%
+  ggplot() +
+  aes(x = Sepal.Length, y = Sepal.Width) +
+  geom_point() +
+  aes(shape = Species) + #ROTATE
+  aes(size = Species) + #ROTATE
+  aes(alpha = Species) + #ROTATE
+  aes(color = Species) #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "scatterplot2", title = "### Iris", break_type = "rotate", widths = c(40, 60))`
+
+
+---
+
+```{r gapminder, include = FALSE}
+### select only data from the year 2007
+gapminder %>% 
+  filter(year == 2007) ->
+  gap_07
+
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp)) +
+  geom_col()
+```
+
+`r chunk_reveal(chunk_name = "gapminder", title = "### Gapminder", break_type = "auto", widths = c(40, 60))`
+
+---
+
+```{r gapminder2, include = FALSE}
+gap_07 %>% #BREAK
+  group_by(continent) %>% #BREAK
+  summarize(mean_lifeExp = mean(lifeExp)) -> #BREAK
+  gap_07_means
+
+gap_07_means %>% 
+  ggplot(aes(x = continent, y = mean_lifeExp)) +
+  geom_col() #BREAK
+```
+
+`r chunk_reveal(chunk_name = "gapminder2", title = "### Gapminder", break_type = "user", widths = c(40, 60))`
+
+---
+
+```{r gapminder3, include = FALSE}
+gap_07_means %>% #BREAK
+  arrange(mean_lifeExp) %>% #BREAK
+  mutate(continent = fct_inorder(continent)) -> #BREAK
+  gap_07_means
+
+gap_07_means %>% 
+  ggplot(aes(x = continent, y = mean_lifeExp)) +
+  geom_col() + #BREAK
+  aes(fill = continent) + #ROTATE
+  aes(color = continent) + #ROTATE
+  aes(fill = continent) #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder3", title = "### Gapminder", omit = "#ROTATE", break_type = "user", widths = c(40, 60))`
+
+---
+
+`r chunk_reveal(chunk_name = "gapminder3", title = "### Gapminder", break_type = "rotate", widths = c(40, 60))`
+
+---
+
+```{r gapminder4, eval = F, echo = F}
+gap_07$continent <- factor(
+  gap_07$continent,
+  levels = c("Africa",
+             "Asia",
+             "Americas",
+             "Europe",
+             "Oceania")
+  )
+
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  stat_summary(fun = mean, geom = "bar") + #ROTATE
+  stat_summary(fun = mean, geom = "bar", color = "black") #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder4", title = "### Gapminder", omit = "#ROTATE", break_type = "auto", widths = c(45, 55))`
+
+---
+
+`r chunk_reveal(chunk_name = "gapminder4", title = "### Gapminder", break_type = "rotate", widths = c(45, 55))`
+
+---
+
+```{r gapminder5, eval = FALSE, echo = FALSE}
+gap_07$continent <- factor(
+  gap_07$continent,
+  levels = c("Africa",
+             "Asia",
+             "Americas",
+             "Europe",
+             "Oceania")
+  )
+
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  stat_summary(fun = mean, geom = "bar", color = "black") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.5) + #ROTATE
+  stat_summary(fun.data = mean_sdl, geom = "errorbar", width = 0.5) #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder5", title = "### Gapminder", break_type = "rotate", widths = c(45, 55))`
+
+---
+
+```{r gapminder6, include = FALSE}
+gap_07_means %>%
+  ggplot(aes(x = continent, y = mean_lifeExp, color = continent)) +
+  geom_pointrange(aes(ymin = 0, ymax = mean_lifeExp))
+```
+
+`r chunk_reveal(chunk_name = "gapminder6", title = "### Gapminder", break_type = 1, widths = c(45, 55))`
+
+---
+
+```{r gapminder7, eval = FALSE, echo = FALSE}
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  geom_boxplot() + #ROTATE
+  geom_violin() #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder7", title = "### Gapminder", break_type = "rotate", widths = c(45, 55))`
+
+---
+
+```{r gapminder8, eval = FALSE, echo = FALSE}
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  geom_violin() + #BREAK
+  stat_summary(fun = "median", geom = "point") + #BREAK
+```
+
+`r chunk_reveal(chunk_name = "gapminder8", title = "### Gapminder", omit = "#ROTATE", break_type = "user", widths = c(45, 55))`
+
+---
+
+```{r gapminder9, eval = FALSE, echo = FALSE}
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  geom_violin() +
+  stat_summary(fun = "median", geom = "point") +
+  geom_boxplot() + #ROTATE
+  geom_boxplot(width = 0.1) #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder9", title = "### Gapminder", break_type = "rotate", widths = c(45, 55))`
+
+---
+
+```{r gapminder10, eval = FALSE, echo = FALSE}
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  geom_violin() +
+  geom_dotplot(binaxis = "y", binwidth = 1, stackdir = "center", dotsize = 0.6) + #ROTATE
+  geom_point() #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder10", title = "### Gapminder", break_type = "rotate", widths = c(45, 55))`
+
+---
+
+```{r gapminder11, eval = FALSE, echo = FALSE}
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
+  geom_dotplot(binaxis = "y", binwidth = 1, stackdir = "center", dotsize = 1) + #BREAK
+  stat_summary(fun = median, geom = "point", shape = 95, size = 12) + #BREAK
+  geom_text(aes(label = country)) + #ROTATE
+  geom_text_repel(aes(label = country), size = 3) + #ROTATE
+  geom_text_repel(aes(label = ifelse(lifeExp>80, as.character(country), '')), size = 3) #ROTATE
+```
+
+`r chunk_reveal(chunk_name = "gapminder11", title = "### Gapminder", omit = "#ROTATE", break_type = "user", widths = c(45, 55))`
+
+---
+
+`r chunk_reveal(chunk_name = "gapminder11", title = "### Gapminder", break_type = "rotate", widths = c(45, 55))`
+
+---
+
+```{r gapminder12, eval = FALSE, echo = FALSE}
+gap_07 %>%
+  ggplot(aes(x = continent, y = lifeExp, fill = continent, label = country)) +
+  geom_dotplot(binaxis = "y", binwidth = 1, stackdir = "center", dotsize = 1) + #BREAK
+  scale_fill_viridis_d(name = "Continent") + #BREAK
+  geom_text_repel(aes(label = ifelse(lifeExp>80, as.character(country), '')), size = 3) +
+  geom_text_repel(aes(label = ifelse(lifeExp>73 & continent == "Africa", as.character(country), '')), size = 3) +
+  geom_text_repel(aes(label = ifelse(lifeExp<40, as.character(country), '')), size = 3) +
+  geom_text_repel(aes(label = ifelse(lifeExp<60 & continent == "Asia", as.character(country), '')), size = 3) +
+  geom_text_repel(aes(label = ifelse(lifeExp<66 & continent == "Americas", as.character(country), '')), size = 3) +
+  geom_text_repel(aes(label = ifelse(lifeExp<73 & continent == "Europe", as.character(country), '')), size = 3) + #BREAK
+  labs(title = "Average Country-Wide Life Expectancies by Continent in 2007",
+       x = "Continent",
+       y = "Life Expectancy") #BREAK
+```
+
+`r chunk_reveal(chunk_name = "gapminder12", title = "### Gapminder", break_type = "user", widths = c(45, 55))`
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 75%}
+
+.remark-slide-number {
+  display: none;
+}
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```
