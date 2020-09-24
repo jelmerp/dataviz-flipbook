@@ -996,7 +996,7 @@ gap_07_means %&gt;%
 gap_07_means %&gt;%
   ggplot(aes(x = continent, y = mean_lifeExp)) +
   geom_col() +
-* aes(fill = continent)
+* aes(color = continent)
 ```
 ]
  
@@ -1019,35 +1019,12 @@ gap_07_means %&gt;%
 gap_07_means %&gt;%
   ggplot(aes(x = continent, y = mean_lifeExp)) +
   geom_col() +
-* aes(color = continent)
-```
-]
- 
-.panel2-gapminder3-rotate[
-![](index_files/figure-html/gapminder3_rotate_02_output-1.png)&lt;!-- --&gt;
-]
-
----
-count: false
- 
-### Gapminder
-.panel1-gapminder3-rotate[
-
-```r
-gap_07_means %&gt;%
-  arrange(mean_lifeExp) %&gt;%
-  mutate(continent = fct_inorder(continent)) -&gt;
-  gap_07_means
-
-gap_07_means %&gt;%
-  ggplot(aes(x = continent, y = mean_lifeExp)) +
-  geom_col() +
 * aes(fill = continent)
 ```
 ]
  
 .panel2-gapminder3-rotate[
-![](index_files/figure-html/gapminder3_rotate_03_output-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/gapminder3_rotate_02_output-1.png)&lt;!-- --&gt;
 ]
 
 &lt;style&gt;

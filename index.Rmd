@@ -97,7 +97,6 @@ gap_07_means %>% #BREAK
 gap_07_means %>% 
   ggplot(aes(x = continent, y = mean_lifeExp)) +
   geom_col() + #BREAK
-  aes(fill = continent) + #ROTATE
   aes(color = continent) + #ROTATE
   aes(fill = continent) #ROTATE
 ```
