@@ -15,7 +15,7 @@ output:
 ```{r, include = F}
 # This is the recommended set up for flipbooks
 # you might think about setting cache to TRUE as you gain practice
-knitr::opts_chunk$set(fig.width = 8, message = FALSE, warning = FALSE, comment = "", cache = TRUE)
+knitr::opts_chunk$set(fig.width = 8, fig.retina = 4, message = FALSE, warning = FALSE, comment = "", cache = TRUE)
 library(flipbookr)
 library(tidyverse)
 library(gapminder)
