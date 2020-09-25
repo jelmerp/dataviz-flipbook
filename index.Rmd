@@ -217,8 +217,8 @@ gap_07 %>%
   geom_dotplot(binaxis = "y", binwidth = 1, stackdir = "center", dotsize = 1) + #BREAK
   stat_summary(fun = median, geom = "point", shape = 95, size = 12) + #BREAK
   geom_text(aes(label = country)) + #ROTATE
-  geom_text_repel(aes(label = country), size = 3) + #ROTATE
-  geom_text_repel(aes(label = ifelse(lifeExp>80, as.character(country), '')), size = 3) #ROTATE
+  geom_text_repel(aes(label = country), size = 2) + #ROTATE
+  geom_text_repel(aes(label = ifelse(lifeExp>80, as.character(country), '')), size = 2) #ROTATE
 ```
 
 `r chunk_reveal(chunk_name = "gapminder11", title = "### Gapminder", omit = "#ROTATE", break_type = "user", widths = c(45, 55))`

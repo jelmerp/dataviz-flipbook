@@ -1761,7 +1761,7 @@ gap_07 %&gt;%
   ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
   geom_dotplot(binaxis = "y", binwidth = 1, stackdir = "center", dotsize = 1) +
   stat_summary(fun = median, geom = "point", shape = 95, size = 12) +
-* geom_text_repel(aes(label = country), size = 3)
+* geom_text_repel(aes(label = country), size = 2)
 ```
 ]
  
@@ -1780,7 +1780,7 @@ gap_07 %&gt;%
   ggplot(aes(x = continent, y = lifeExp, fill = continent)) +
   geom_dotplot(binaxis = "y", binwidth = 1, stackdir = "center", dotsize = 1) +
   stat_summary(fun = median, geom = "point", shape = 95, size = 12) +
-* geom_text_repel(aes(label = ifelse(lifeExp&gt;80, as.character(country), '')), size = 3)
+* geom_text_repel(aes(label = ifelse(lifeExp&gt;80, as.character(country), '')), size = 2)
 ```
 ]
  
